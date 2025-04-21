@@ -131,6 +131,7 @@
     </div>
 
     <div class="botoes">
+      <button onclick="enableClickToDial();">enable click to dial</button>
       <button class="btn-login" onclick="fazerLogin()">🔐 Login</button>
       <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
     </div>
@@ -217,19 +218,10 @@
       return numero.replace(/[^\d]/g, '');
     }
 
-    function enableClickToDial() {
-      sforce.opencti.onClickToDial({
-        listener: function (payload) {
-          const numeroOriginal = payload.number;
-          const numeroFormatado = formatNumber(numeroOriginal);
-
-          console.log("Interceptado número:", numeroFormatado);
-
-          document.getElementById('numero').value = numeroFormatado;
-          fazerLigacao();
-        }
-      });
-    }
+function enableClickToDial() {
+   //Invokes API method
+   sforce.interaction.cti.enableClickToDial(callback);
+   }
 
     // Ativa o Click to Dial ao carregar a página
     window.addEventListener("load", function () {
