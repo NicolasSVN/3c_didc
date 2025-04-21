@@ -102,6 +102,9 @@
       margin-top: 20px;
     }
   </style>
+
+  <!-- BIBLIOTECA OPEN CTI -->
+  <script src="https://svn3.lightning.force.com/support/api/63.0/lightning/opencti_min.js" type="text/javascript"></script>
 </head>
 <body>
   <div class="container">
@@ -209,11 +212,26 @@
       }
     }
 
-    // Função global para ser chamada pelo Salesforce
+    // Função global manual
     window.clickToCall = function(numero) {
       document.getElementById('numero').value = numero;
       fazerLigacao();
     };
+  </script>
+
+  <!-- OPEN CTI: onClickToDial integration -->
+  <script>
+    if (typeof sforce !== "undefined" && sforce.opencti) {
+      sforce.opencti.onClickToDial({
+        listener: function(payload) {
+          console.log("Número clicado no Salesforce:", payload.number);
+          document.getElementById('numero').value = payload.number;
+          fazerLigacao();
+        }
+      });
+    } else {
+      console.warn("Open CTI ainda não carregado.");
+    }
   </script>
 </body>
 </html>
