@@ -37,23 +37,10 @@
           });
         }
       }
-
-      window.addEventListener("message", function (event) {
-        console.log(event.data);
-        if (event.data == "enableClickToDial") {
-          sforce.opencti.enableClickToDial({
-            callback: enableClickToDialCallback,
-          });
-        } else if (event.data == "disableClickToDial") {
-          sforce.opencti.disableClickToDial({
-            callback: disableClickToDialCallback,
-          });
-        }
-      });
       
     </script>
   </head>
   <body>
-    <button onclick="toggleClickToDial();">toggleClickToDial()</button>
+      <button onclick="toggleClickToDial();">Toggle Click to Dial</button>
   </body>
 </html>
