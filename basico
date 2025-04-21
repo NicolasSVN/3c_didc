@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://domain:port/support/api/63.0/lightning/opencti_min.js"></script>
+    <script type="text/javascript">
+      var callback = function(response) {
+         if (response.success) {
+            console.log('API method call executed successfully! returnValue:', response.returnValue);
+         } else { 
+            console.error('Something went wrong! Errors:', response.errors);
+         } 
+      };
+
+      function enableClickToDial() {
+          sforce.opencti.enableClickToDial({callback: callback});
+      }
+     </script>
+  </head>
+  <body>
+    <button onclick="enableClickToDial();">enableClickToDial()</button>
+  </body>
+</html>
