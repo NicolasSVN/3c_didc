@@ -1,2 +1,2 @@
-# 3c_didc
+# 3c_disc
 Discador > Open CTI > Salesforce
