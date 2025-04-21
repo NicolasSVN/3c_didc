@@ -221,17 +221,18 @@
 
   <!-- OPEN CTI: onClickToDial integration -->
   <script>
-    if (typeof sforce !== "undefined" && sforce.opencti) {
-      sforce.opencti.onClickToDial({
-        listener: function(payload) {
-          console.log("Número clicado no Salesforce:", payload.number);
-          document.getElementById('numero').value = payload.number;
-          fazerLigacao();
-        }
-      });
-    } else {
-      console.warn("Open CTI ainda não carregado.");
+   sforce.opencti.enableClickToDial(args)
+
+/** additional sample code 
+/**
+ * @param {Object} args
+ * @param {Function} args.callback
+ */
+args = {
+    callback: function(result) {
+        console.log(result);
     }
+};
   </script>
 </body>
 </html>
