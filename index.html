@@ -231,19 +231,18 @@
       document.getElementById('numero').value = numero;
       fazerLigacao();
     };
-  </script>
-     <script type="text/javascript">
-       var callback = function (response) {
-           if (response.result) {
-              alert('Click to dial was enabled.');
-           } else { 
-              alert('Click to dial was not enabled.');
-           } 
-        };
-        function enableClickToDial() {
-   //Invokes API method
-   sforce.interaction.cti.enableClickToDial(callback);
-   }
+<script type="text/javascript">
+  function clickToDialCallback(response) {
+    if (response.result) {
+      alert('Click to dial was enabled.');
+    } else { 
+      alert('Click to dial was not enabled.');
+    } 
+  }
+
+  function enableClickToDial() {
+    sforce.interaction.cti.enableClickToDial(clickToDialCallback);
+  }
 </script>
 </body>
 </html>
