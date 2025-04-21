@@ -2,20 +2,58 @@
   <head>
     <script type="text/javascript" src="https://domain:port/support/api/63.0/lightning/opencti_min.js"></script>
     <script>
-      var callback = function(response) {
-         if (response.success) {
-            console.log('API method call executed successfully! returnValue:', response.returnValue);
-         } else { 
-            console.error('Something went wrong! Errors:', response.errors);
-         } 
+
+      var enableClickToDialCallback = function (response) {
+        if (response.success) {
+          isClickToDialEnabled = true;
+          console.log(
+            "API method call executed successfully! returnValue:",
+            response.returnValue
+          );
+        } else {
+          console.error("Something went wrong! Errors:", response.errors);
+        }
       };
 
-      function enableClickToDial() {
-          sforce.opencti.enableClickToDial({callback: callback});
+      var disableClickToDialCallback = function (response) {
+        if (response.success) {
+          console.log(
+            "API method call executed successfully! returnValue:",
+            response.returnValue
+          );
+        } else {
+          console.error("Something went wrong! Errors:", response.errors);
+        }
+        isClickToDialEnabled = false;
+      };
+      function toggleClickToDial() {
+        if (isClickToDialEnabled) {
+          sforce.opencti.disableClickToDial({
+            callback: disableClickToDialCallback,
+          });
+        } else {
+          sforce.opencti.enableClickToDial({
+            callback: enableClickToDialCallback,
+          });
+        }
       }
-     </script>
+
+      window.addEventListener("message", function (event) {
+        console.log(event.data);
+        if (event.data == "enableClickToDial") {
+          sforce.opencti.enableClickToDial({
+            callback: enableClickToDialCallback,
+          });
+        } else if (event.data == "disableClickToDial") {
+          sforce.opencti.disableClickToDial({
+            callback: disableClickToDialCallback,
+          });
+        }
+      });
+      
+    </script>
   </head>
   <body>
-    <button onclick="enableClickToDial();">enableClickToDial()</button>
+    <button onclick="toggleClickToDial();">toggleClickToDial()</button>
   </body>
 </html>
