@@ -221,18 +221,14 @@
 
   <!-- OPEN CTI: onClickToDial integration -->
   <script>
-   sforce.opencti.enableClickToDial(args)
+function enableClickToDial() {
+        sforce.opencti.onClickToDial({
+          listener: function (payload) {
+            const numeroOriginal = payload.number;
+            const numeroFormatado = formatNumber(numeroOriginal);
 
-/** additional sample code 
-/**
- * @param {Object} args
- * @param {Function} args.callback
- */
-args = {
-    callback: function(result) {
-        console.log(result);
-    }
-};
+            console.log("Interceptado número:", numeroFormatado);
+
   </script>
 </body>
 </html>
