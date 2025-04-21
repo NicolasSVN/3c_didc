@@ -2,7 +2,7 @@
   <head>
     <script type="text/javascript" src="https://domain:port/support/api/63.0/lightning/opencti_min.js"></script>
     <script>
-
+      let isClickToDialEnabled = false;
       var enableClickToDialCallback = function (response) {
         if (response.success) {
           isClickToDialEnabled = true;
