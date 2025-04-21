@@ -165,9 +165,9 @@
         const loginSucesso = texto.includes("success") || texto.includes("204") || texto.includes("logado");
 
         if (loginSucesso) {
-          resposta.textContent = "Usuário logado";
+          resposta.textContent = "✅ Usuário logado com sucesso.";
         } else {
-          resposta.textContent = texto;
+          resposta.textContent = "⚠️ Falha no login: " + texto;
         }
 
       } catch (err) {
@@ -202,9 +202,9 @@
         const sucesso = texto.includes("success") || texto.includes("200");
 
         if (sucesso) {
-          resposta.textContent = "Discando";
+          resposta.textContent = "📞 Ligação iniciada.";
         } else {
-          resposta.textContent = texto;
+          resposta.textContent = "⚠️ Erro: " + texto;
         }
 
       } catch (err) {
@@ -212,23 +212,35 @@
       }
     }
 
-    // Função global manual
+    function formatNumber(numero) {
+      // Remove qualquer coisa que não seja número
+      return numero.replace(/[^\d]/g, '');
+    }
+
+    function enableClickToDial() {
+      sforce.opencti.onClickToDial({
+        listener: function (payload) {
+          const numeroOriginal = payload.number;
+          const numeroFormatado = formatNumber(numeroOriginal);
+
+          console.log("Interceptado número:", numeroFormatado);
+
+          document.getElementById('numero').value = numeroFormatado;
+          fazerLigacao();
+        }
+      });
+    }
+
+    // Ativa o Click to Dial ao carregar a página
+    window.addEventListener("load", function () {
+      enableClickToDial();
+    });
+
+    // Função global manual também pode ser usada
     window.clickToCall = function(numero) {
       document.getElementById('numero').value = numero;
       fazerLigacao();
     };
-  </script>
-
-  <!-- OPEN CTI: onClickToDial integration -->
-  <script>
-function enableClickToDial() {
-        sforce.opencti.onClickToDial({
-          listener: function (payload) {
-            const numeroOriginal = payload.number;
-            const numeroFormatado = formatNumber(numeroOriginal);
-
-            console.log("Interceptado número:", numeroFormatado);
-
   </script>
 </body>
 </html>
