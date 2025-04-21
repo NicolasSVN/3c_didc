@@ -224,22 +224,7 @@
       return numero.replace(/[^\d]/g, '');
     }
 
-      var callback = function(response) {
-         if (response.success) {
-            console.log('API method call executed successfully! returnValue:', response.returnValue);
-         } else { 
-            console.error('Something went wrong! Errors:', response.errors);
-         } 
-      };
     
-      function enableClickToDial() {
-          sforce.opencti.enableClickToDial({callback: callback});
-      }
-
-    // Ativa o Click to Dial ao carregar a página
-    window.addEventListener("load", function () {
-      enableClickToDial();
-    });
 
     // Função global manual também pode ser usada
     window.clickToCall = function(numero) {
@@ -247,5 +232,18 @@
       fazerLigacao();
     };
   </script>
+     <script type="text/javascript">
+       var callback = function (response) {
+           if (response.result) {
+              alert('Click to dial was enabled.');
+           } else { 
+              alert('Click to dial was not enabled.');
+           } 
+        };
+        function enableClickToDial() {
+   //Invokes API method
+   sforce.interaction.cti.enableClickToDial(callback);
+   }
+</script>
 </body>
 </html>
