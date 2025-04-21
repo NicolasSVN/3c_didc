@@ -202,19 +202,26 @@
       }
     }
 
-    function enableClickToDial() {
-      if (typeof sforce !== "undefined" && sforce.interaction && sforce.interaction.cti) {
-        sforce.interaction.cti.enableClickToDial(function(response) {
-          if (response && response.result) {
-            alert('✅ Click to dial ativado.');
-          } else {
-            alert('❌ Não foi possível ativar o click to dial.');
-          }
-        });
+function enableClickToDial() {
+  console.log("🔍 Tentando ativar click to dial...");
+
+  if (typeof sforce !== "undefined" && sforce.interaction && sforce.interaction.cti) {
+    console.log("✅ sforce.interaction.cti disponível. Chamando enableClickToDial...");
+
+    sforce.interaction.cti.enableClickToDial(function(response) {
+      console.log("🔁 Resposta de enableClickToDial:", response);
+
+      if (response && response.result) {
+        alert('✅ Click to dial ativado.');
       } else {
-        alert("❌ Open CTI não está disponível.");
+        alert('⚠️ Não foi possível ativar o click to dial.');
       }
-    }
+    });
+  } else {
+    console.warn("❌ sforce ou cti não disponível no ambiente.");
+    alert("❌ Open CTI não está disponível.");
+  }
+}
 
     // Permitir chamada direta via window
     window.clickToCall = function(numero) {
