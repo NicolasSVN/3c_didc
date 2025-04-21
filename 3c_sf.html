@@ -1,0 +1,222 @@
+Claro! Aqui está o HTML completo com a função `clickToCall` adicionada no final, **sem nenhuma alteração no restante**:
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Discador SVN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    iframe {
+      display: block;
+      margin: 10px auto 20px;
+      border: none;
+      width: 300px;
+      height: 100px;
+    }
+
+    input[type="text"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .teclado {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tecla {
+      padding: 15px;
+      font-size: 18px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tecla:hover {
+      background-color: #ddd;
+      transform: scale(1.05);
+    }
+
+    .botoes {
+      display: flex;
+      gap: 10px;
+    }
+
+    .botoes button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-login {
+      background-color: #004b8d;
+      color: white;
+    }
+
+    .btn-call {
+      background-color: #38b36f;
+      color: white;
+    }
+
+    pre {
+      text-align: left;
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      height: 100px;
+      overflow: auto;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Status</h2>
+    <iframe src="https://svninvestimentos.3c.plus/extension?api_token=qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS"
+            width="600"
+            height="600" allow="microphone"></iframe>
+
+    <input type="text" id="numero" placeholder="Digite o número aqui..." />
+
+    <div class="teclado">
+      <button class="tecla" onclick="addNumero('1')">1</button>
+      <button class="tecla" onclick="addNumero('2')">2</button>
+      <button class="tecla" onclick="addNumero('3')">3</button>
+      <button class="tecla" onclick="addNumero('4')">4</button>
+      <button class="tecla" onclick="addNumero('5')">5</button>
+      <button class="tecla" onclick="addNumero('6')">6</button>
+      <button class="tecla" onclick="addNumero('7')">7</button>
+      <button class="tecla" onclick="addNumero('8')">8</button>
+      <button class="tecla" onclick="addNumero('9')">9</button>
+      <button class="tecla" onclick="addNumero('*')">*</button>
+      <button class="tecla" onclick="addNumero('0')">0</button>
+      <button class="tecla" onclick="addNumero('#')">#</button>
+    </div>
+
+    <div class="botoes">
+      <button class="btn-login" onclick="fazerLogin()">🔐 Login</button>
+      <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
+    </div>
+
+    <pre id="resposta"></pre>
+  </div>
+
+  <script>
+    function addNumero(num) {
+      const campo = document.getElementById('numero');
+      campo.value += num;
+    }
+
+    async function fazerLogin() {
+      const resposta = document.getElementById('resposta');
+      resposta.textContent = '⏳ Fazendo login...';
+
+      try {
+        const r = await fetch("https://svninvestimentos.3c.plus/api/v1/agent/login?api_token=qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            campaign: "155735",
+            mode: "manual"
+          })
+        });
+
+        const texto = await r.text();
+        const loginSucesso = texto.includes("success") || texto.includes("204") || texto.includes("logado");
+
+        if (loginSucesso) {
+          resposta.textContent = "Usuário logado";
+        } else {
+          resposta.textContent = texto;
+        }
+
+      } catch (err) {
+        resposta.textContent = "❌ Erro: " + err.message;
+      }
+    }
+
+    async function fazerLigacao() {
+      const numero = document.getElementById('numero').value;
+      const resposta = document.getElementById('resposta');
+
+      if (!numero) {
+        resposta.textContent = "⚠️ Digite um número antes de ligar.";
+        return;
+      }
+
+      resposta.textContent = '⏳ Discando...';
+
+      try {
+        const r = await fetch("https://svninvestimentos.3c.plus/api/v1/agent/manual_call/dial?api_token=qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            phone: numero
+          })
+        });
+
+        const texto = await r.text();
+        const sucesso = texto.includes("success") || texto.includes("200");
+
+        if (sucesso) {
+          resposta.textContent = "Discando";
+        } else {
+          resposta.textContent = texto;
+        }
+
+      } catch (err) {
+        resposta.textContent = "❌ Erro: " + err.message;
+      }
+    }
+
+    // Função global para ser chamada pelo Salesforce
+    window.clickToCall = function(numero) {
+      document.getElementById('numero').value = numero;
+      fazerLigacao();
+    };
+  </script>
+</body>
+</html>
