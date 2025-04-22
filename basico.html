@@ -38,8 +38,15 @@
         }
       }
   function getUser() {
-    const userInfo = sforce.connection.getUserInfo();
-    console.log("User Info:", userInfo);
+  sforce.opencti.getCallCenterSettings({
+  callback: function(result) {
+    if (result.success) {
+      console.log("Call center settings:", result.returnValue);
+    } else {
+      console.error("Erro ao buscar settings:", result.errors);
+    }
+  }
+});
   }
       
   // Executa ao abrir a janela
