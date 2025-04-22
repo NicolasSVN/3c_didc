@@ -37,7 +37,11 @@
           });
         }
       }
-
+  function getUser() {
+    const userInfo = sforce.connection.getUserInfo();
+    console.log("User Info:", userInfo);
+  }
+      
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
@@ -47,5 +51,6 @@
   </head>
   <body>
       <button onclick="toggleClickToDial();">Toggle Click to Dial</button>
+      <button onclick="getUser()">Get User Info</button>
   </body>
 </html>
