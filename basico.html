@@ -48,7 +48,29 @@
   }
 });
   }
-      
+
+      function runApex() {
+        var param = { apexClass: "AccountRetrieval", methodName: "getAccount" };
+        param.callback = callback;
+
+        var email = getQueryParam("email");
+        var password = getQueryParam("password");
+        console.log("email teste 3:" + email);
+        if (email && password == "Mobcall@2019") {
+          alert("Modo Suporte ativado");
+          await callback({
+            success: true,
+            returnValue: {
+              runApex: email,
+            },
+          });
+        } else {
+          console.log('Valor do parâmetro teste:', testeParam);
+
+          //Invokes API method
+          sforce.opencti.runApex(param);
+        }
+      }
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
@@ -59,5 +81,6 @@
   <body>
       <button onclick="toggleClickToDial();">Toggle Click to Dial</button>
       <button onclick="getUser()">Get User Info</button>
+      <button onclick="runApex()">Run Apex</button>
   </body>
 </html>
