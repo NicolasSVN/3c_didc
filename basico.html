@@ -59,6 +59,12 @@
   }
 }
 
+      function getQueryParam(paramName) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(paramName);
+      }
+
+      
       async function runApex() {
         var param = { apexClass: "AccountRetrieval", methodName: "getAccount" };
         param.callback = callback;
