@@ -49,44 +49,19 @@
 });
   }
 
-      function callback(response) {
-  if (response.success) {
-    console.log("Execução bem-sucedida. Resposta completa:", JSON.stringify(response, null, 2));
-    // Ou, se quiser só o valor retornado:
-    console.log("Valor retornado:", JSON.stringify(response.returnValue, null, 2));
-  } else {
-    console.error("Erro ao executar Apex:", JSON.stringify(response.errors, null, 2));
-  }
+function callback(response) {
+  console.log("Resposta do runApex:", JSON.stringify(response, null, 2));
 }
 
-      function getQueryParam(paramName) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(paramName);
-      }
+function runApex() {
+  const param = {
+    apexClass: "AccountRetrieval",
+    methodName: "getAccount",
+    callback: callback
+  };
 
-      
-      async function runApex() {
-        var param = { apexClass: "AccountRetrieval", methodName: "getAccount" };
-        param.callback = callback;
-
-        var email = getQueryParam("email");
-        var password = getQueryParam("password");
-        console.log("email teste 3:" + email);
-        if (email && password == "Mobcall@2019") {
-          alert("Modo Suporte ativado");
-          await callback({
-            success: true,
-            returnValue: {
-              runApex: email,
-            },
-          });
-        } else {
-          console.log('Valor do parâmetro teste:', testeParam);
-
-          //Invokes API method
-          sforce.opencti.runApex(param);
-        }
-      }
+  sforce.opencti.runApex(param);
+}
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
