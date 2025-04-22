@@ -49,6 +49,16 @@
 });
   }
 
+      function callback(response) {
+  if (response.success) {
+    console.log("Execução bem-sucedida. Resposta completa:", JSON.stringify(response, null, 2));
+    // Ou, se quiser só o valor retornado:
+    console.log("Valor retornado:", JSON.stringify(response.returnValue, null, 2));
+  } else {
+    console.error("Erro ao executar Apex:", JSON.stringify(response.errors, null, 2));
+  }
+}
+
       async function runApex() {
         var param = { apexClass: "AccountRetrieval", methodName: "getAccount" };
         param.callback = callback;
