@@ -1,6 +1,8 @@
 <html>
   <head>
     <script type="text/javascript" src="https://svn3.lightning.force.com/support/api/63.0/lightning/opencti_min.js"></script>
+    <script type="text/javascript" src="https://svn3.lightning.force.com/soap/ajax/63.0/connection.js"></script>
+    /soap/ajax/63.0/connection.js
     <script>
       let isClickToDialEnabled = false;
       var enableClickToDialCallback = function (response) {
@@ -37,20 +39,11 @@
           });
         }
       }
-  function getUser() {
-  sforce.opencti.getCallCenterSettings({
-  callback: function(result) {
-    if (result.success) {
-      console.log("Call center settings:", result.returnValue);
-    } else {
-      console.error("Erro ao buscar settings:", result.errors);
-    }
-  }
-});
-  }
+
 
 function callback(response) {
   console.log("Resposta do runApex:", JSON.stringify(response, null, 2));
+  const email = response.returnValue.runApex;
 }
 
 function runApex() {
@@ -62,6 +55,28 @@ function runApex() {
 
   sforce.opencti.runApex(param);
 }
+
+  function buscarUsuarioPorEmail(email) {
+    const query = `SELECT Name, Id, Username,Token3C__c FROM User WHERE Username = '${email}'`;
+
+    sforce.connection.query(query, {
+      onSuccess: function(result) {
+        if (result.records.length > 0) {
+          usuarioLogado = result.records[0]; // salva os dados na variável global
+          console.log("Usuário encontrado:", usuarioLogado);
+        } else {
+          console.log("Nenhum usuário encontrado com esse e-mail.");
+        }
+      },
+      onFailure: function(error) {
+        console.error("Erro ao executar a query:", error);
+      }
+    });
+  }
+
+
+
+      
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
@@ -73,5 +88,7 @@ function runApex() {
       <button onclick="toggleClickToDial();">Toggle Click to Dial</button>
       <button onclick="getUser()">Get User Info</button>
       <button onclick="runApex()">Run Apex</button>
+      <button onclick="buscarUsuarioPorEmail()">Dados usuário</button>
+    
   </body>
 </html>
