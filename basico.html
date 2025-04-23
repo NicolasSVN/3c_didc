@@ -60,16 +60,13 @@ function runApex() {
   sforce.opencti.runApex(param);
 }
 
-            
-const
- { createClient } = supabase;        
+    
 const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co'; 
 // Substitua pela URL do seu projeto
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; 
 // Substitua pela sua chave pública
        
-const
- supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
         
 async function fetchTokenByEmail(email) {
             
