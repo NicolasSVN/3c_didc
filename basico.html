@@ -62,30 +62,33 @@ function runApex() {
 }
 
     
-const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co'; 
-// Substitua pela URL do seu projeto
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; 
-// Substitua pela sua chave pública
-       
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-        
-async function fetchTokenByEmail(email) {
-            
-const { data, error } = await supabase               
-  .from('user_token')
-  .select('token')
-  .eq('email', email);
-            
-if (error) {
-    console.error('Erro ao buscar o token:', error);
-    } else {
-   console.log('Token encontrado:', data);
-            }
+ window.addEventListener('load', () => {
+    // Inicializa o Supabase
+    const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    // Sua função de busca
+    async function fetchTokenByEmail(email) {
+      const { data, error } = await supabase
+        .from('user_token')
+        .select('token')
+        .eq('email', email);
+
+      if (error) {
+        console.error('Erro ao buscar o token:', error);
+      } else {
+        console.log('Token encontrado:', data);
+        // Exemplo: armazenar no localStorage
+        if (data.length > 0) {
+          localStorage.setItem('token3C', data[0].token);
         }
-// Chame a função com o email desejado
-fetchTokenByEmail('email@example.com'); 
+      }
+    }
 
-
+    // Agora pode chamar a função
+    fetchTokenByEmail('email@example.com');
+  });
       
   // Executa ao abrir a janela
   window.onload = function () {
