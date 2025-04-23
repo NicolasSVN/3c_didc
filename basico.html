@@ -68,6 +68,7 @@ function runApex() {
 
 // Sua função de busca
     async function fetchTokenByEmail(email) {
+    console.log('Buscando token para o email:', email);
       const { data, error } = await supabaseClient
         .from('user_token')
         .select('token')
