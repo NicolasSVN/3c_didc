@@ -48,7 +48,7 @@ function callback(response) {
 const email = response.returnValue.runApex; 
 // Obtém o email do retorno            
 // Chama fetchTokenByEmail com o email obtido
-            fetchTokenByEmail(email);        
+fetchTokenByEmail(email);        
 }
 
 function runApex() {
@@ -61,38 +61,27 @@ function runApex() {
   sforce.opencti.runApex(param);
 }
 
-    
- window.addEventListener('load', () => {
-    // Inicializa o Supabase
-    const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-    // Sua função de busca
+// Sua função de busca
     async function fetchTokenByEmail(email) {
       const { data, error } = await supabase
         .from('user_token')
         .select('token')
         .eq('email', email);
-
       if (error) {
         console.error('Erro ao buscar o token:', error);
       } else {
         console.log('Token encontrado:', data);
-        // Exemplo: armazenar no localStorage
-        if (data.length > 0) {
-          localStorage.setItem('token3C', data[0].token);
-        }
       }
     }
-
-    // Agora pode chamar a função
-    fetchTokenByEmail('email@example.com');
   });
       
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
+  // Inicializa o Supabase
+    const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
   };
       
     </script>
