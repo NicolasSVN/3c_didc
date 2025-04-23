@@ -78,18 +78,18 @@ function runApex() {
   window.onload = function () {
     toggleClickToDial();
   // Inicializa o Supabase
+    const { createClient } = supabase; 
     const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
     const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    
   };
       
     </script>
   </head>
   <body>
       <button onclick="toggleClickToDial();">Toggle Click to Dial</button>
-      <button onclick="getUser()">Get User Info</button>
       <button onclick="runApex()">Run Apex</button>
-      <button onclick="buscarUsuarioPorEmail()">Dados usuário</button>
     
   </body>
 </html>
