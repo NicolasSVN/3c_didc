@@ -91,7 +91,7 @@ function runApex() {
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
-    force.opencti.onClickToDial({
+    sforce.opencti.onClickToDial({
       listener: function (payload) {
       const numero = payload.number;
       console.log('📞 Número clicado:', numero);
