@@ -118,7 +118,7 @@
   <div class="container">
     <h2>Status</h2>
 
-    <iframe src="https://svninvestimentos.3c.plus/extension?api_token=qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS" allow="microphone"></iframe>
+    <iframe id="iframe3c" allow="microphone"></iframe>
 
     <input type="text" id="digitarNumero" placeholder="Digite o número aqui..." />
 
@@ -147,7 +147,8 @@
   </div>
 
   <script>
-    const apiToken = "qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS";
+      
+    let globalToken = "";
     const resposta = document.getElementById('resposta');
 
     function addNumero(num) {
@@ -159,7 +160,7 @@
       resposta.textContent = '⏳ Fazendo login...';
 
       try {
-        const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/login?api_token=${apiToken}`, {
+        const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/login?api_token=${globalToken}`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
@@ -191,7 +192,7 @@
       resposta.textContent = '⏳ Discando...';
 
       try {
-        const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/manual_call/dial?api_token=${apiToken}`, {
+        const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/manual_call/dial?api_token=${globalToken}`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
@@ -277,6 +278,15 @@ function runApex() {
   sforce.opencti.runApex(param);
 }
 
+function carregarIframeComToken() {
+  if (globalToken) {
+    const iframe = document.getElementById("iframe3c");
+    const url = `https://svninvestimentos.3c.plus/extension?api_token=${encodeURIComponent(globalToken)}`;
+    iframe.src = url;
+  } else {
+    console.warn("Token ainda não disponível.");
+  }
+}
 // Sua função de busca
     async function fetchTokenByEmail(email) {
     console.log('Buscando token para o email:', email);
@@ -289,6 +299,7 @@ function runApex() {
       } else {
         console.log('Token encontrado:', data);
       }
+    carregarIframeComToken();
     };
       
   // Executa ao abrir a janela
