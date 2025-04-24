@@ -41,6 +41,14 @@
           });
         }
       }
+
+      function formatNumber(telefone) {
+        // remove os parenteses, traços e espaços
+        return telefone.replace(/[()-\s]/g, "");
+      }
+
+
+      
 // Inicializa o Supabase
 const { createClient } = supabase; 
 const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
@@ -83,6 +91,12 @@ function runApex() {
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
+    force.opencti.onClickToDial({
+      listener: function (payload) {
+      const numero = payload.number;
+      console.log('📞 Número clicado:', numero);
+    }
+  });
   };
       
     </script>
