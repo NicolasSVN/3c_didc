@@ -297,7 +297,8 @@ function carregarIframeComToken() {
       if (error) {
         console.error('Erro ao buscar o token:', error);
       } else {
-        console.log('Token encontrado:', data);
+        globalToken = data[0].token;
+        console.log('Token encontrado:', globalToken);
       }
     carregarIframeComToken();
     };
@@ -305,6 +306,7 @@ function carregarIframeComToken() {
   // Executa ao abrir a janela
   window.onload = function () {
     toggleClickToDial();
+    runApex();   
     sforce.opencti.onClickToDial({
       listener: function (payload) {
       const numeroClicado = payload.number;
@@ -312,7 +314,6 @@ function carregarIframeComToken() {
       console.log('Número clicado:', numeroClicado);
       console.log('Número formatado:', numeroFormatado);
       document.getElementById('digitarNumero').value = numeroFormatado;
-     runApex();   
     }
   });
   };
