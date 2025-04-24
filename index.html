@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script type="text/javascript" src="https://svn3.lightning.force.com/support/api/63.0/lightning/opencti_min.js"></script>
+    <script type="text/javascript" src="https://svn3.lightning.force.com/soap/ajax/63.0/connection.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/supabase.min.js"></script>
+  
   <meta charset="UTF-8">
   <title>Discador SVN</title>
   <style>
@@ -202,32 +207,102 @@
       }
     }
 
-function enableClickToDial() {
-  console.log("🔍 Tentando ativar click to dial...");
+   let isClickToDialEnabled = false;
+      var enableClickToDialCallback = function (response) {
+        if (response.success) {
+          isClickToDialEnabled = true;
+          console.log(
+            "API method call executed successfully! returnValue:",
+            response.returnValue
+          );
+        } else {
+          console.error("Something went wrong! Errors:", response.errors);
+        }
+      };
 
-  if (typeof sforce !== "undefined" && sforce.interaction && sforce.interaction.cti) {
-    console.log("✅ sforce.interaction.cti disponível. Chamando enableClickToDial...");
-
-    sforce.interaction.cti.enableClickToDial(function(response) {
-      console.log("🔁 Resposta de enableClickToDial:", response);
-
-      if (response && response.result) {
-        alert('✅ Click to dial ativado.');
-      } else {
-        alert('⚠️ Não foi possível ativar o click to dial.');
+      var disableClickToDialCallback = function (response) {
+        if (response.success) {
+          console.log(
+            "API method call executed successfully! returnValue:",
+            response.returnValue
+          );
+        } else {
+          console.error("Something went wrong! Errors:", response.errors);
+        }
+        isClickToDialEnabled = false;
+      };
+      function toggleClickToDial() {
+        if (isClickToDialEnabled) {
+          sforce.opencti.disableClickToDial({
+            callback: disableClickToDialCallback,
+          });
+        } else {
+          sforce.opencti.enableClickToDial({
+            callback: enableClickToDialCallback,
+          });
+        }
       }
-    });
-  } else {
-    console.warn("❌ sforce ou cti não disponível no ambiente.");
-    alert("❌ Open CTI não está disponível.");
-  }
+
+      function formatNumber(telefone) {
+        // remove os parenteses, traços e espaços
+        return telefone.replace(/\D/g, "");
+      }
+
+
+      
+// Inicializa o Supabase
+const { createClient } = supabase; 
+const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    
+
+function callback(response) {
+      console.log("Resposta do runApex:", JSON.stringify(response, null, 2));  
+const email = response.returnValue.runApex; 
+// Obtém o email do retorno            
+// Chama fetchTokenByEmail com o email obtido
+fetchTokenByEmail(email);        
 }
 
-    // Permitir chamada direta via window
-    window.clickToCall = function(numero) {
-      document.getElementById('numero').value = numero;
-      fazerLigacao();
+function runApex() {
+  const param = {
+    apexClass: "AccountRetrieval",
+    methodName: "getAccount",
+    callback: callback
+  };
+
+  sforce.opencti.runApex(param);
+}
+
+// Sua função de busca
+    async function fetchTokenByEmail(email) {
+    console.log('Buscando token para o email:', email);
+      const { data, error } = await supabaseClient
+        .from('user_token')
+        .select('token')
+        .eq('email', email);
+      if (error) {
+        console.error('Erro ao buscar o token:', error);
+      } else {
+        console.log('Token encontrado:', data);
+      }
     };
+      
+  // Executa ao abrir a janela
+  window.onload = function () {
+    toggleClickToDial();
+    sforce.opencti.onClickToDial({
+      listener: function (payload) {
+      const numero = payload.number;
+      const numeroFormatado = formatNumber(numero);
+      console.log('Número clicado:', numero);
+      console.log('Número formatado:', numeroFormatado);
+        
+    }
+  });
+  };
+
   </script>
 </body>
 </html>
