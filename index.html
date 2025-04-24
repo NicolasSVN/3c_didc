@@ -118,7 +118,7 @@
 
     <iframe src="https://svninvestimentos.3c.plus/extension?api_token=qBe3zYghMW87cVSES1xYnBzFDyoRXYbt49Wn7htTTEkLfGHOL0zc0luzFXpS" allow="microphone"></iframe>
 
-    <input type="text" id="numero" placeholder="Digite o número aqui..." />
+    <input type="text" id="digitarNumero" placeholder="Digite o número aqui..." />
 
     <div class="teclado">
       <button class="tecla" onclick="addNumero('1')">1</button>
@@ -136,7 +136,7 @@
     </div>
 
     <div class="botoes">
-      <button class="btn-enableclick" onclick="enableClickToDial()">🔓 Enable Click to Dial</button>
+
       <button class="btn-login" onclick="fazerLogin()">🔐 Login</button>
       <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
     </div>
@@ -149,7 +149,7 @@
     const resposta = document.getElementById('resposta');
 
     function addNumero(num) {
-      const campo = document.getElementById('numero');
+      const campo = document.getElementById('digitarNumero');
       campo.value += num;
     }
 
@@ -179,7 +179,7 @@
     }
 
     async function fazerLigacao() {
-      const numero = document.getElementById('numero').value;
+      const numero = document.getElementById('digitarNumero').value;
 
       if (!numero) {
         resposta.textContent = "⚠️ Digite um número antes de ligar.";
@@ -294,10 +294,11 @@ function runApex() {
     toggleClickToDial();
     sforce.opencti.onClickToDial({
       listener: function (payload) {
-      const numero = payload.number;
-      const numeroFormatado = formatNumber(numero);
-      console.log('Número clicado:', numero);
+      const numeroClicado = payload.number;
+      const numeroFormatado = formatNumber(numeroClicado);
+      console.log('Número clicado:', numeroClicado);
       console.log('Número formatado:', numeroFormatado);
+      document.getElementById('digitarNumero').value = numeroFormatado;
         
     }
   });
