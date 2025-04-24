@@ -44,7 +44,7 @@
 
       function formatNumber(telefone) {
         // remove os parenteses, traços e espaços
-        return telefone.replace(/[()-\s]/g, "");
+        return telefone.replace(/\D/g, "");
       }
 
 
@@ -94,7 +94,10 @@ function runApex() {
     sforce.opencti.onClickToDial({
       listener: function (payload) {
       const numero = payload.number;
+      const numeroFormatado = formatNumber(numero);
       console.log('📞 Número clicado:', numero);
+      console.log('📞 Número clicado:', numeroFormatado);
+        
     }
   });
   };
