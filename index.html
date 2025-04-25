@@ -82,45 +82,49 @@
       cursor: pointer;
     }
 
- .botoes-container {
-  width: fit-content; /* ou 100% se quiser ocupar a div pai */
+.botoes-container {
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .btn-login {
   background-color: blue;
   color: white;
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 2px solid blue;
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
 .botoes-ligacao {
   display: flex;
+  width: 100%; /* <-- garantir que o container ocupa tudo */
   gap: 10px;
+}
+
+.btn-ligar,
+.btn-desligar {
+  flex: 1; /* <-- força cada botão ocupar metade */
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  width: 100%; /* <-- importante: garantir que o botão estica */
 }
 
 .btn-ligar {
   background-color: red;
-  color: white;
-  padding: 12px 20px;
-  border: 2px solid red;
-  font-size: 16px;
-  flex: 1;
 }
 
 .btn-desligar {
-  background-color: limegreen;
-  color: white;
-  padding: 12px 20px;
-  border: 2px solid limegreen;
-  font-size: 16px;
-  flex: 1;
+  background-color: green;
 }
 
 .btn {
-  border-radius: 6px;
   cursor: pointer;
 }
 
