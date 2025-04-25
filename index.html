@@ -257,14 +257,14 @@ async function fazerLigacao() {
     if (data.status === 200 && data.call) {
       console.log(data);
       
-      const callId = data.call.id; // ID da chamada
+      currentCallId  = data.call.id; // ID da chamada
       const callNumber = data.call.number; // Número da chamada
       const transactionId = data.transaction_id; // ID da transação
       const agentName = data.agent.name; // Nome do agente
       const agentTelephonyId = data.agent.telephony_id; // ID do agente
 
       // Exibe informações detalhadas da chamada
-      console.log(`📞 Call ID: ${callId}`);
+      console.log(`📞 Call ID: ${currentCallId}`);
       console.log(`📞 Número da chamada: ${callNumber}`);
       console.log(`📞 Transaction ID: ${transactionId}`);
       console.log(`📞 Agente: ${agentName} (ID: ${agentTelephonyId})`);
