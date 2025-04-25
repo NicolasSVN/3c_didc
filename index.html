@@ -86,33 +86,47 @@
       cursor: pointer;
     }
 
-    .btn-login {
-      background-color: #004b8d;
-      color: white;
-    }
+ .botoes-container {
+  width: fit-content; /* ou 100% se quiser ocupar a div pai */
+}
 
-    .btn-call {
-      background-color: #38b36f;
-      color: white;
-    }
-    .btn-calloff {
-      background-color: #b51235;
-      color: white;
-    }
-    .botoes-login {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
+.btn-login {
+  background-color: blue;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid blue;
+  margin-bottom: 10px;
+}
 
-    .botoes-container { 
-        width: fit-content;
-    }
-    .botoes-ligacao {
-        display: flex;
-        gap: 10px;
-    }
+.botoes-ligacao {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-ligar {
+  background-color: red;
+  color: white;
+  padding: 12px 20px;
+  border: 2px solid red;
+  font-size: 16px;
+  flex: 1;
+}
+
+.btn-desligar {
+  background-color: limegreen;
+  color: white;
+  padding: 12px 20px;
+  border: 2px solid limegreen;
+  font-size: 16px;
+  flex: 1;
+}
+
+.btn {
+  border-radius: 6px;
+  cursor: pointer;
+}
 
     pre {
       text-align: left;
