@@ -230,7 +230,7 @@
         console.trace();
       }
     }
-
+let currentCallId = null;
 async function fazerLigacao() {
   const numero = document.getElementById('digitarNumero').value;
 
@@ -280,7 +280,7 @@ async function fazerLigacao() {
     resposta.textContent = "❌ Erro na ligação: " + err.message;
   }
 }
-let currentCallId = null;
+
 async function encerrarLigacao() {
   if (!currentCallId) {
     resposta.textContent = "⚠️ Nenhuma ligação ativa para encerrar.";
