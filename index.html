@@ -225,7 +225,7 @@
         console.log("Resposta do login:", texto);
       } catch (err) {
         resposta.textContent = "❌ Erro no login: " + err.message;
-        console.log("Resposta do login:", texto);
+        console.error("Resposta do login:", err);
       }
     }
 
