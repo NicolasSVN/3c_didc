@@ -391,8 +391,8 @@ function carregarIframeComToken() {
     toggleClickToDial();
     runApex();   
     sforce.opencti.onClickToDial({
-      sforce.opencti.setSoftphonePanelVisibility({visible:true});  
       listener: function (payload) {
+      sforce.opencti.setSoftphonePanelVisibility({visible:true});  
       const numeroClicado = payload.number;
       const numeroFormatado = formatNumber(numeroClicado);
       console.log('Número clicado:', numeroClicado);
