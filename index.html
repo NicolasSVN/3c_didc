@@ -95,6 +95,10 @@
       background-color: #38b36f;
       color: white;
     }
+    .btn-calloff {
+      background-color: #b51235;
+      color: white;
+    }
 
     pre {
       text-align: left;
@@ -139,8 +143,10 @@
 
     <div class="botoes">
 
-      <button class="btn-login" onclick="fazerLogin()">🔐 Login</button>
+      <button class="btn-login" onclick="fazerLogin()">Login</button>
       <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
+      <button class="btn-calloff" onclick="encerrarLigacao()">☎️ Desligar</button>
+        
     </div>
 
     <pre id="resposta">Aguardando ação...</pre>
@@ -201,14 +207,48 @@
           body: new URLSearchParams({ phone: numero })
         });
 
-        const texto = await res.text();
-        const sucesso = texto.includes("success") || texto.includes("200");
+        const data = await res.json();
+        if (data.success && data.data?.call_id) {
+          
+            currentCallId = data.data.call_id; // ← armazena o ID da ligação
+            console.log("📞 Call ID:", currentCallId); // ← agora você pode ver no console
+            resposta.textContent = "📞 Ligação iniciada.";
+        } else {
+      resposta.textContent = "⚠️ Erro: " + JSON.stringify(data);
+        }
+        } catch (err) {
+      resposta.textContent = "❌ Erro na ligação: " + err.message;
+  }
+}
+let currentCallId = null;
+async function encerrarLigacao() {
+  if (!currentCallId) {
+    resposta.textContent = "⚠️ Nenhuma ligação ativa para encerrar.";
+    return;
+  }
 
-        resposta.textContent = sucesso ? "📞 Ligação iniciada." : "⚠️ Erro: " + texto;
-      } catch (err) {
-        resposta.textContent = "❌ Erro na ligação: " + err.message;
-      }
+  try {
+    const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/call/${currentCallId}/hangup?api_token=${globalToken}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({ call_id: currentCallId })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      resposta.textContent = "📴 Ligação encerrada com sucesso.";
+      currentCallId = null; // limpa o ID
+    } else {
+      resposta.textContent = "⚠️ Erro ao encerrar: " + JSON.stringify(data);
     }
+  } catch (err) {
+    resposta.textContent = "❌ Erro na tentativa de encerrar: " + err.message;
+  }
+}
+      
 
    let isClickToDialEnabled = false;
       var enableClickToDialCallback = function (response) {
