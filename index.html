@@ -305,7 +305,7 @@ async function encerrarLigacao() {
       resposta.textContent = "⚠️ Erro ao encerrar: " + JSON.stringify(data);
     }
   } catch (err) {
-    resposta.textContent = "❌ Erro na tentativa de encerrar: " + err.message;
+    resposta.textContent = "❌ Erro na tentativa de encerrar: " + JSON.stringify(err);
   }
 }
       
