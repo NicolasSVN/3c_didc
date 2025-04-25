@@ -106,6 +106,14 @@
       gap: 10px;
     }
 
+    .botoes-container { 
+        width: fit-content;
+    }
+    .botoes-ligacao {
+        display: flex;
+        gap: 10px;
+    }
+
     pre {
       text-align: left;
       background: #f0f0f0;
@@ -151,11 +159,11 @@
       <button class="tecla" onclick="addNumero('#')">#</button>
     </div>
 
-    <div class="botoes">
+    <div class="botoes-container">
 
       <button class="btn-login" onclick="fazerLogin()">Login</button>
         
-     <div class="botoes">
+     <div class="botoes-ligacao">
       <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
       <button class="btn-calloff" onclick="encerrarLigacao()">☎️ Desligar</button>
      </div>
