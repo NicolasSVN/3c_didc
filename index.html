@@ -138,7 +138,7 @@
 
     <iframe id="iframe3c" allow="microphone"></iframe>
       
-<div style="display: flex; align-items: stretch; gap: 5px;">
+<div style="display: flex; align-items: center; gap: 10px;">
   <input type="text" id="digitarNumero" placeholder="Digite o número aqui...">
   <button onclick="apagarUltimoDigito()">⌫</button>
 </div>
@@ -159,18 +159,14 @@
       <button class="tecla" onclick="addNumero('#')">#</button>
     </div>
 
-    <div class="botoes-container">
+<div class="botoes-container">
+  <button class="btn btn-login" onclick="fazerLogin()">Login</button>
 
-      <button class="btn-login" onclick="fazerLogin()">Login</button>
-        
-     <div class="botoes-ligacao">
-      <button class="btn-call" onclick="fazerLigacao()">📞 Ligar</button>
-      <button class="btn-calloff" onclick="encerrarLigacao()">☎️ Desligar</button>
-     </div>
-    </div>
-
-    <pre id="resposta">Aguardando ação...</pre>
+  <div class="botoes-ligacao">
+    <button class="btn btn-ligar" onclick="fazerLigacao()">📞 Ligar</button>
+    <button class="btn btn-desligar" onclick="encerrarLigacao()" >☎️ Desligar</button>
   </div>
+</div>
 
   <script>
       
