@@ -223,9 +223,11 @@
 
         resposta.textContent = sucesso ? "✅ Usuário logado com sucesso." : "⚠️ Falha no login: " + texto;
         console.log("Resposta do login:", texto);
+        console.trace();
       } catch (err) {
         resposta.textContent = "❌ Erro no login: " + err.message;
         console.error("Resposta do login:", err);
+        console.trace();
       }
     }
 
@@ -368,7 +370,8 @@ function carregarIframeComToken() {
     const iframe = document.getElementById("iframe3c");
     const url = `https://svninvestimentos.3c.plus/extension?api_token=${encodeURIComponent(globalToken)}`;
     iframe.src = url;
-    fazerLogin();  
+    fazerLogin();
+
   } else {
     console.warn("Token ainda não disponível.");
   }
