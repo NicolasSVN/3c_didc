@@ -300,11 +300,13 @@ async function encerrarLigacao() {
     const data = await res.json();
     if (data.success) {
       resposta.textContent = "📴 Ligação encerrada com sucesso.";
-      currentCallId = null; // limpa o ID
+      currentCallId = null;
     } else {
+      console.log("Encerrar ligação:", data);  
       resposta.textContent = "⚠️ Erro ao encerrar: " + data.returnValue;
     }
   } catch (err) {
+    console.error("Encerrar ligação:", err);
     resposta.textContent = "❌ Erro na tentativa de encerrar: " + err.message;
   }
 }
