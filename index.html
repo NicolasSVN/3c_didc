@@ -302,10 +302,10 @@ async function encerrarLigacao() {
       resposta.textContent = "📴 Ligação encerrada com sucesso.";
       currentCallId = null; // limpa o ID
     } else {
-      resposta.textContent = "⚠️ Erro ao encerrar: " + JSON.stringify(data);
+      resposta.textContent = "⚠️ Erro ao encerrar: " + data.returnValue;
     }
   } catch (err) {
-    resposta.textContent = "❌ Erro na tentativa de encerrar: " + JSON.stringify(err);
+    resposta.textContent = "❌ Erro na tentativa de encerrar: " + err.message;
   }
 }
       
