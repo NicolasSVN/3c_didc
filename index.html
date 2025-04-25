@@ -222,8 +222,10 @@
         const sucesso = texto.includes("success") || texto.includes("204") || texto.includes("logado") || texto.includes("202") || texto.includes("200") ;
 
         resposta.textContent = sucesso ? "✅ Usuário logado com sucesso." : "⚠️ Falha no login: " + texto;
+        console.log("Resposta do login:", texto);
       } catch (err) {
         resposta.textContent = "❌ Erro no login: " + err.message;
+        console.log("Resposta do login:", texto);
       }
     }
 
