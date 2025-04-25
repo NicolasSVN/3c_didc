@@ -297,7 +297,7 @@ async function encerrarLigacao() {
       body: new URLSearchParams({ call_id: currentCallId })
     });
 
-    const data = await res.json();
+    const data = await res.text();
     if (data.success) {
       resposta.textContent = "📴 Ligação encerrada com sucesso.";
       currentCallId = null;
