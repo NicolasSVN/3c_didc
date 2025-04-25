@@ -86,7 +86,7 @@
       cursor: pointer;
     }
 
-    .btn-login, .btn-enableclick {
+    .btn-login {
       background-color: #004b8d;
       color: white;
     }
@@ -123,8 +123,12 @@
     <h2>Status</h2>
 
     <iframe id="iframe3c" allow="microphone"></iframe>
-
-    <input type="text" id="digitarNumero" placeholder="Digite o número aqui..." />
+      
+<div style="display: flex; align-items: center; gap: 5px;">
+  <input type="text" id="digitarNumero" placeholder="Digite o número aqui...">
+  <button onclick="apagarUltimoDigito()">⌫</button>
+</div>
+      
 
     <div class="teclado">
       <button class="tecla" onclick="addNumero('1')">1</button>
@@ -288,9 +292,12 @@ async function encerrarLigacao() {
 
       function formatNumber(telefone) {
         // remove os parenteses, traços e espaços
-        return telefone.replace(/\D/g, "");
+            return telefone.replace(/\D/g, "");
       }
-
+      function apagarUltimoDigito() {
+           const input = document.getElementById('digitarNumero');
+          input.value = input.value.slice(0, -1);
+      }
 
       
 // Inicializa o Supabase
