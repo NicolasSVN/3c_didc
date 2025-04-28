@@ -206,14 +206,14 @@
       resposta.textContent = '⏳ Fazendo login...';
 
       try {
-        const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/login?api_token=${globalToken}`, {
+        const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/login?api_token=${globalToken}`, {
           method: "POST",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded"
           },
           body: new URLSearchParams({
-            campaign: "155735",
+            campaign: "172523",
             mode: "manual"
           })
         });
@@ -242,7 +242,7 @@ async function fazerLigacao() {
   resposta.textContent = '⏳ Discando...';
 
   try {
-    const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/manual_call/dial?api_token=${globalToken}`, {
+    const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/manual_call/dial?api_token=${globalToken}`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -288,7 +288,7 @@ async function encerrarLigacao() {
   }
 
   try {
-    const res = await fetch(`https://svninvestimentos.3c.plus/api/v1/agent/call/${currentCallId}/hangup?api_token=${globalToken}`, {
+    const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/call/${currentCallId}/hangup?api_token=${globalToken}`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -386,7 +386,7 @@ function runApex() {
 function carregarIframeComToken() {
   if (globalToken) {
     const iframe = document.getElementById("iframe3c");
-    const url = `https://svninvestimentos.3c.plus/extension?api_token=${encodeURIComponent(globalToken)}`;
+    const url = `https://svninvestimentos1.3c.plus/extension?api_token=${encodeURIComponent(globalToken)}`;
     iframe.src = url;
     fazerLogin();
 
