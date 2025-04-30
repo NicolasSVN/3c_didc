@@ -374,6 +374,12 @@ const email = response.returnValue.runApex;
 fetchTokenByEmail(email);        
 }
 
+function callbackTask(response) {
+      console.log("Tarefa criada:", JSON.stringify(response, null, 2));  
+const task = response.returnValue.runApex; 
+ 
+}
+
 function runApex() {
   const param = {
     apexClass: "AccountRetrieval",
@@ -383,6 +389,18 @@ function runApex() {
 
   sforce.opencti.runApex(param);
 }
+
+function runTaskCreator() {
+  const param = {
+    apexClass: "TaskCreator",
+    methodName: "createTask",
+    methodParams: `recordId='${recordId}', ownerId='${ownerId}', subject='${subject}', activityDate='${activityDate}'`,
+    callback: callbackTask
+  };
+
+  sforce.opencti.runApex(param);
+}
+
 
 function carregarIframeComToken() {
   if (globalToken) {
@@ -409,6 +427,21 @@ function carregarIframeComToken() {
         console.log('Token encontrado:', globalToken);
       }
     carregarIframeComToken();
+    };
+let userId = null;
+    async function fetchIdByEmail(email) {
+    console.log('Buscando Id para o email:', email);
+      const { data, error } = await supabaseClient
+        .from('user_token')
+        .select('userId')
+        .eq('email', email);
+      if (error) {
+        console.error('Erro ao buscar o Id:', error);
+      } else {
+        UserId = data[0].userId;
+        console.log('Id encontrado:', UserId);
+      }
+    
     };
       
   // Executa ao abrir a janela
