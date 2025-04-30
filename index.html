@@ -231,6 +231,7 @@
       }
     }
 let currentCallId = null;
+let idRegistro = null;
 async function fazerLigacao() {
   const numero = document.getElementById('digitarNumero').value;
 
@@ -418,9 +419,11 @@ function carregarIframeComToken() {
       listener: function (payload) {
       sforce.opencti.setSoftphonePanelVisibility({visible:true});  
       const numeroClicado = payload.number;
+      idRegistro = payload.recordId;
       const numeroFormatado = formatNumber(numeroClicado);
-      console.log('Número clicado:', numeroClicado);
-      console.log('Número formatado:', numeroFormatado);
+          console.log('Número formatado:', numeroFormatado);
+          console.log('Id do registro:', idRegistro);
+          
       document.getElementById('digitarNumero').value = numeroFormatado;
     }
   });
