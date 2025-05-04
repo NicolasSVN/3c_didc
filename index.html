@@ -193,9 +193,45 @@
 </div>
 
   <script>
+    let globalToken = null;
+    let currentCallId = null;
+    let idRegistro = null;
+    let userId = null;
+    let isClickToDialEnabled = false;
       
-    let globalToken = "";
-    const resposta = document.getElementById('resposta');
+// Ao carregar a página
+// 1. Ligar o clicktToCall
+// 2. Pega o e-mail do usuário
+// 3. Fica escutando o click em qualquer número da tela
+
+window.onload = function () {
+    sforce.opencti.enableClickToDial({
+      callback: function (response) {
+        if (response.success) {
+          isClickToDialEnabled = true;
+          console.log("✅ Click-to-Dial habilitado com sucesso.");
+        } else {
+          console.error("❌ Erro ao habilitar Click-to-Dial:", response.errors);
+        }
+      }
+    });
+    runApex();   
+    sforce.opencti.onClickToDial({
+      listener: function (payload) {
+      sforce.opencti.setSoftphonePanelVisibility({visible:true});  
+      const numeroClicado = payload.number;
+      idRegistro = payload.recordId;
+      const numeroFormatado = formatNumber(numeroClicado);
+          console.log('Número formatado:', numeroFormatado);
+          console.log('Id do registro:', idRegistro);
+          
+      document.getElementById('digitarNumero').value = numeroFormatado;
+    }
+  });
+  };
+      
+
+    const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
 
     function addNumero(num) {
       const campo = document.getElementById('digitarNumero');
@@ -204,6 +240,7 @@
 
     async function fazerLogin() {
       resposta.textContent = '⏳ Fazendo login...';
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 2 segundos
 
       try {
         const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/login?api_token=${globalToken}`, {
@@ -218,20 +255,17 @@
           })
         });
 
-        const texto = await res.text();
-        const sucesso = texto.includes("success") || texto.includes("204") || texto.includes("logado") || texto.includes("202") || texto.includes("200") ;
-
-        resposta.textContent = sucesso ? "✅ Logado > Pode ligar." : "⚠️ Falha no login: " + texto;
+        const texto = await res.text(); // Pegando a resposta da requisição de LOGIN
+        
+        resposta.textContent = texto;
         console.log("Resposta do login:", texto);
-        console.trace();
+
       } catch (err) {
         resposta.textContent = "❌ Erro no login: " + err.message;
         console.error("Resposta do login:", err);
-        console.trace();
       }
     }
-let currentCallId = null;
-let idRegistro = null;
+
 async function fazerLigacao() {
   const numero = document.getElementById('digitarNumero').value;
 
@@ -270,21 +304,21 @@ async function fazerLigacao() {
       console.log(`📞 Transaction ID: ${transactionId}`);
       console.log(`📞 Agente: ${agentName} (ID: ${agentTelephonyId})`);
 
-      resposta.textContent = `📞 Ligação iniciada com sucesso para o número ${callNumber}.`;
+      resposta.textContent = `📞 Ligando para: ${callNumber}`;
 
     } else {
-      resposta.textContent = "⚠️ Erro: " + JSON.stringify(data);
+      resposta.textContent = "❌ Erro ao ligar: " + JSON.stringify(data);
       console.log(data);
     }
 
   } catch (err) {
-    resposta.textContent = "❌ Erro na ligação: " + err.message;
+    resposta.textContent = "❌ Erro ao ligar: " + err.message;
   }
 }
 
 async function encerrarLigacao() {
   if (!currentCallId) {
-    resposta.textContent = "⚠️ Nenhuma ligação ativa para encerrar.";
+    resposta.textContent = "⚠️ Você não está em ligação.";
     return;
   }
 
@@ -300,54 +334,18 @@ async function encerrarLigacao() {
 
     const data = await res.text();
     if (data.success) {
-      resposta.textContent = "📴 Ligação encerrada com sucesso.";
+      resposta.textContent = "📴 Ligação encerrada.";
       currentCallId = null;
     } else {
       console.log("Encerrar ligação:", data);  
-      resposta.textContent = "⚠️ Erro ao encerrar: " + data.returnValue;
+      resposta.textContent = "❌ Erro ao encerrar: " + data.returnValue;
     }
   } catch (err) {
     console.error("Encerrar ligação:", err);
-    resposta.textContent = "❌ Erro na tentativa de encerrar: " + err.message;
+    resposta.textContent = "❌ Erro ao encerrar: " + err.message;
   }
 }
       
-
-   let isClickToDialEnabled = false;
-      var enableClickToDialCallback = function (response) {
-        if (response.success) {
-          isClickToDialEnabled = true;
-          console.log(
-            "API method call executed successfully! returnValue:",
-            response.returnValue
-          );
-        } else {
-          console.error("Something went wrong! Errors:", response.errors);
-        }
-      };
-
-      var disableClickToDialCallback = function (response) {
-        if (response.success) {
-          console.log(
-            "API method call executed successfully! returnValue:",
-            response.returnValue
-          );
-        } else {
-          console.error("Something went wrong! Errors:", response.errors);
-        }
-        isClickToDialEnabled = false;
-      };
-      function toggleClickToDial() {
-        if (isClickToDialEnabled) {
-          sforce.opencti.disableClickToDial({
-            callback: disableClickToDialCallback,
-          });
-        } else {
-          sforce.opencti.enableClickToDial({
-            callback: enableClickToDialCallback,
-          });
-        }
-      }
 
       function formatNumber(telefone) {
         // remove os parenteses, traços e espaços
@@ -427,7 +425,7 @@ function carregarIframeComToken() {
       }
     carregarIframeComToken();
     };
-let userId = null;
+
     async function fetchIdByEmail(email) {
     console.log('Buscando Id para o email:', email);
       const { data, error } = await supabaseClient
@@ -444,22 +442,7 @@ let userId = null;
     };
       
   // Executa ao abrir a janela
-  window.onload = function () {
-    toggleClickToDial();
-    runApex();   
-    sforce.opencti.onClickToDial({
-      listener: function (payload) {
-      sforce.opencti.setSoftphonePanelVisibility({visible:true});  
-      const numeroClicado = payload.number;
-      idRegistro = payload.recordId;
-      const numeroFormatado = formatNumber(numeroClicado);
-          console.log('Número formatado:', numeroFormatado);
-          console.log('Id do registro:', idRegistro);
-          
-      document.getElementById('digitarNumero').value = numeroFormatado;
-    }
-  });
-  };
+
 
   </script>
 </body>
