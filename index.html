@@ -242,10 +242,10 @@ function runApex() {
 
 function callback(response) {
       console.log("Resposta do runApex:", JSON.stringify(response, null, 2));  
-const email = response.returnValue.runApex; 
-// Obtém o email do retorno            
-// Chama fetchTokenByEmail com o email obtido
-fetchTokenByEmail(email);        
+const email = response.returnValue.runApex; // Obtém o email do usuário            
+fetchTokenByEmail(email); // Busca o token
+fetchIdByEmail(email); // Busca o id > OwnerId
+
 };
       
 // Busca o token no Supabase pelo o e-mail
@@ -275,6 +275,19 @@ fetchTokenByEmail(email);
       }
     };
 
+  async function fetchIdByEmail(email) {
+    console.log('Buscando Id para o email:', email);
+      const { data, error } = await supabaseClient
+        .from('user_token')
+        .select('userId')
+        .eq('email', email);
+      if (error) {
+        console.error('Erro ao buscar o Id:', error);
+      } else {
+        userId = data[0].userId;
+        console.log('Id encontrado:', userId);
+      }
+    }; 
       
     async function fazerLogin() {
       resposta.textContent = '⏳ Fazendo login...';
@@ -417,20 +430,7 @@ const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     
-async function fetchIdByEmail(email) {
-    console.log('Buscando Id para o email:', email);
-      const { data, error } = await supabaseClient
-        .from('user_token')
-        .select('userId')
-        .eq('email', email);
-      if (error) {
-        console.error('Erro ao buscar o Id:', error);
-      } else {
-        UserId = data[0].userId;
-        console.log('Id encontrado:', UserId);
-      }
-    
-    };
+
       
 const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
 
