@@ -206,7 +206,7 @@ console.log(`Evento: ${eventName}`, args);
 displayEvent(eventName);
 });
 
-function displayEvent(eventName) {
+function displayEvent(eventName, eventData) {
   let message = '';
   switch (eventName) {
     case 'agent-was-logged-out':
@@ -217,6 +217,8 @@ function displayEvent(eventName) {
       break;
     case 'call-was-created':
       message = 'Nova chamada iniciada.';
+      currentCallId = eventData?.call?.id;
+      console.log("currentCallId:", currentCallId);
       break;
     case 'call-is-trying':
       message = 'Tentando conectar a ligação...';
