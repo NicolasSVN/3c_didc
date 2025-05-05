@@ -328,6 +328,10 @@ fetchIdByEmail(email); // Busca o id > OwnerId
         const iframe = document.getElementById("iframe3c");
         const url = `https://svninvestimentos1.3c.plus/extension?api_token=${globalToken}`;
         iframe.src = url;
+  socket.on('connect', () => {
+  console.log('Conectado ao servidor 3C Plus');
+  resposta.textContent = 'Clique em Login';
+});
 
       } else {
         console.warn("Token ainda não disponível.");
