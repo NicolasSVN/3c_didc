@@ -377,7 +377,7 @@ function runTaskCreator() {
     const param = {
     apexClass: "TaskCreator",
     methodName: "createTask",
-    methodParams: `'${idRegistro}', '${userId}', '${subject}', '${activityDate}"`,
+    methodParams: `'recordId=${idRegistro}', 'ownerId=${userId}', 'subject=${subject}', 'activityDate=${activityDate}"`,
     callback: function(response) {
       console.log("Tarefa criada:", JSON.stringify(response, null, 2));
     }
