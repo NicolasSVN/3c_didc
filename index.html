@@ -203,7 +203,7 @@ const socket = io('https://socket.3c.plus', {
 // Debugging: Captura todos os eventos WebSocket.io
 socket.onAny((eventName, ...args) => {
 console.log(`Evento: ${eventName}`, args);
-resposta.textContent = `${eventName}`;
+displayEvent(eventName);
 });
 
 function displayEvent(eventName) {
