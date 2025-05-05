@@ -215,7 +215,7 @@ window.onload = function () {
         }
       }
     });
-    runApex();   
+    runApex(); // Captura o e-mail do usuário  
     sforce.opencti.onClickToDial({
       listener: function (payload) {
       sforce.opencti.setSoftphonePanelVisibility({visible:true});  
@@ -229,15 +229,35 @@ window.onload = function () {
     }
   });
   };
+
+// Busca o token no Supabase pelo o e-mail
+    async function fetchTokenByEmail(email) {
+    console.log('Buscando token para o email:', email);
+      const { data, error } = await supabaseClient
+        .from('user_token')
+        .select('token')
+        .eq('email', email);
+      if (error) {
+        console.error('Erro ao buscar o token:', error);
+      } else {
+        globalToken = data[0].token;
+        console.log('Token encontrado:', globalToken);
+      }
+    carregarIframeComToken();
+    };
+
+    function carregarIframeComToken() {
+      if (globalToken) {
+        const iframe = document.getElementById("iframe3c");
+        const url = `https://svninvestimentos.3c.plus/extension?api_token=${globalToken}`;
+        iframe.src = url;
+
+      } else {
+        console.warn("Token ainda não disponível.");
+      }
+    };
+
       
-
-    const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
-
-    function addNumero(num) {
-      const campo = document.getElementById('digitarNumero');
-      campo.value += num;
-    }
-
     async function fazerLogin() {
       resposta.textContent = '⏳ Fazendo login...';
       await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 2 segundos
@@ -400,31 +420,6 @@ function runTaskCreator() {
 }
 
 
-function carregarIframeComToken() {
-  if (globalToken) {
-    const iframe = document.getElementById("iframe3c");
-    const url = `https://svninvestimentos.3c.plus/extension?api_token=hbaSsvTdi8vBRLtEDkrqH5CnRRptKEtlMUy256rKhMgOqcitEVLrwuS95SGB`;
-    iframe.src = url;
-
-  } else {
-    console.warn("Token ainda não disponível.");
-  }
-}
-// Sua função de busca
-    async function fetchTokenByEmail(email) {
-    console.log('Buscando token para o email:', email);
-      const { data, error } = await supabaseClient
-        .from('user_token')
-        .select('token')
-        .eq('email', email);
-      if (error) {
-        console.error('Erro ao buscar o token:', error);
-      } else {
-        globalToken = data[0].token;
-        console.log('Token encontrado:', globalToken);
-      }
-    carregarIframeComToken();
-    };
 
     async function fetchIdByEmail(email) {
     console.log('Buscando Id para o email:', email);
@@ -441,8 +436,13 @@ function carregarIframeComToken() {
     
     };
       
-  // Executa ao abrir a janela
+      
+    const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
 
+    function addNumero(num) {
+      const campo = document.getElementById('digitarNumero');
+      campo.value += num;
+    }
 
   </script>
 </body>
