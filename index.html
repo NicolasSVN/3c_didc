@@ -217,7 +217,7 @@ function displayEvent(eventName, eventData) {
       break;
     case 'call-was-created':
       message = 'Nova chamada iniciada.';
-      currentCallId = eventData?.call?.id;
+      currentCallId = eventData?.call?.telephony_id;
       console.log("currentCallId:", currentCallId);
       break;
     case 'call-is-trying':
