@@ -229,7 +229,25 @@ window.onload = function () {
     }
   });
   };
+      
+function runApex() {
+  const param = {
+    apexClass: "AccountRetrieval",
+    methodName: "getAccount",
+    callback: callback
+  };
 
+  sforce.opencti.runApex(param);
+};
+
+function callback(response) {
+      console.log("Resposta do runApex:", JSON.stringify(response, null, 2));  
+const email = response.returnValue.runApex; 
+// Obtém o email do retorno            
+// Chama fetchTokenByEmail com o email obtido
+fetchTokenByEmail(email);        
+};
+      
 // Busca o token no Supabase pelo o e-mail
     async function fetchTokenByEmail(email) {
     console.log('Buscando token para o email:', email);
@@ -284,7 +302,7 @@ window.onload = function () {
         resposta.textContent = "❌ Erro no login: " + err.message;
         console.error("Resposta do login:", err);
       }
-    }
+    };
 
 async function fazerLigacao() {
   const numero = document.getElementById('digitarNumero').value;
@@ -295,7 +313,8 @@ async function fazerLigacao() {
   }
 
   resposta.textContent = '⏳ Discando...';
-
+  await new Promise(resolve => setTimeout(resolve, 2000));
+    
   try {
     const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/manual_call/dial?api_token=${globalToken}`, {
       method: "POST",
@@ -334,7 +353,7 @@ async function fazerLigacao() {
   } catch (err) {
     resposta.textContent = "❌ Erro ao ligar: " + err.message;
   }
-}
+};
 
 async function encerrarLigacao() {
   if (!currentCallId) {
@@ -364,7 +383,7 @@ async function encerrarLigacao() {
     console.error("Encerrar ligação:", err);
     resposta.textContent = "❌ Erro ao encerrar: " + err.message;
   }
-}
+};
       
 
       function formatNumber(telefone) {
@@ -384,13 +403,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     
 
-function callback(response) {
-      console.log("Resposta do runApex:", JSON.stringify(response, null, 2));  
-const email = response.returnValue.runApex; 
-// Obtém o email do retorno            
-// Chama fetchTokenByEmail com o email obtido
-fetchTokenByEmail(email);        
-}
+
 
 function callbackTask(response) {
       console.log("Tarefa criada:", JSON.stringify(response, null, 2));  
@@ -398,15 +411,7 @@ const task = response.returnValue.runApex;
  
 }
 
-function runApex() {
-  const param = {
-    apexClass: "AccountRetrieval",
-    methodName: "getAccount",
-    callback: callback
-  };
 
-  sforce.opencti.runApex(param);
-}
 
 function runTaskCreator() {
   const param = {
