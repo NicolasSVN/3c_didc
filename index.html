@@ -344,6 +344,7 @@ async function fazerLigacao() {
       console.log(`📞 Agente: ${agentName} (ID: ${agentTelephonyId})`);
 
       resposta.textContent = `📞 Ligando para: ${callNumber}`;
+      runTaskCreator();
 
     } else {
       resposta.textContent = "❌ Erro ao ligar: " + JSON.stringify(data);
@@ -354,6 +355,23 @@ async function fazerLigacao() {
     resposta.textContent = "❌ Erro ao ligar: " + err.message;
   }
 };
+
+function runTaskCreator() {
+    const activityDate = new Date().toISOString().split('T')[0];
+    const param = {
+    apexClass: "TaskCreator",
+    methodName: "createTask",
+    methodParams: `recordId='${idRegistro}', ownerId='${userId}', subject='Chamada 3C', activityDate='${activityDate}'`,
+    callback: callbackTask
+  };
+
+  sforce.opencti.runApex(param);
+}
+
+function callbackTask(response) {
+      console.log("Tarefa criada:", JSON.stringify(response, null, 2));  
+const task = response.returnValue.runApex; 
+}   
 
 async function encerrarLigacao() {
   if (!currentCallId) {
@@ -385,48 +403,21 @@ async function encerrarLigacao() {
   }
 };
       
+function formatNumber(telefone) { 
+    return telefone.replace(/\D/g, ""); // remove os parenteses, traços e espaços
+}
+function apagarUltimoDigito() {
+    const input = document.getElementById('digitarNumero');
+    input.value = input.value.slice(0, -1);
+}
 
-      function formatNumber(telefone) {
-        // remove os parenteses, traços e espaços
-            return telefone.replace(/\D/g, "");
-      }
-      function apagarUltimoDigito() {
-           const input = document.getElementById('digitarNumero');
-          input.value = input.value.slice(0, -1);
-      }
-
-      
 // Inicializa o Supabase
 const { createClient } = supabase; 
 const supabaseUrl = 'https://dbtifvsodujcktmxoswl.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRidGlmdnNvZHVqY2t0bXhvc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY4NTg5NDksImV4cCI6MjA0MjQzNDk0OX0.nqStQuofSwfnSk0ixvgT3qMfybGVZN57id8c4rjklhI'; // sua chave
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     
-
-
-
-function callbackTask(response) {
-      console.log("Tarefa criada:", JSON.stringify(response, null, 2));  
-const task = response.returnValue.runApex; 
- 
-}
-
-
-
-function runTaskCreator() {
-  const param = {
-    apexClass: "TaskCreator",
-    methodName: "createTask",
-    methodParams: `recordId='${recordId}', ownerId='${ownerId}', subject='${subject}', activityDate='${activityDate}'`,
-    callback: callbackTask
-  };
-
-  sforce.opencti.runApex(param);
-}
-
-
-
-    async function fetchIdByEmail(email) {
+async function fetchIdByEmail(email) {
     console.log('Buscando Id para o email:', email);
       const { data, error } = await supabaseClient
         .from('user_token')
@@ -441,13 +432,12 @@ function runTaskCreator() {
     
     };
       
-      
-    const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
+const resposta = document.getElementById('resposta'); //Todas as respostas de requisições mandam o resultado pra "resposta"
 
-    function addNumero(num) {
-      const campo = document.getElementById('digitarNumero');
-      campo.value += num;
-    }
+function addNumero(num) {
+    const campo = document.getElementById('digitarNumero');
+    campo.value += num;
+}
 
   </script>
 </body>
