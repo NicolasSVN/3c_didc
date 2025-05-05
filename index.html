@@ -203,6 +203,7 @@ const socket = io('https://socket.3c.plus', {
 // Debugging: Captura todos os eventos WebSocket.io
 socket.onAny((eventName, ...args) => {
 console.log(`Evento: ${eventName}`, args);
+resposta.textContent = `${eventName}`;
 });      
       
     let globalToken = null;
@@ -302,8 +303,8 @@ fetchIdByEmail(email); // Busca o id > OwnerId
     }; 
       
     async function fazerLogin() {
-      resposta.textContent = '⏳ Fazendo login...';
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 2 segundos
+        console.log("⏳ Fazendo login...");      
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 2 segundos
 
       try {
         const res = await fetch(`https://svninvestimentos1.3c.plus/api/v1/agent/login?api_token=${globalToken}`, {
@@ -319,12 +320,9 @@ fetchIdByEmail(email); // Busca o id > OwnerId
         });
 
         const texto = await res.text(); // Pegando a resposta da requisição de LOGIN
-        
-        resposta.textContent = texto;
         console.log("Resposta do login:", texto);
 
       } catch (err) {
-        resposta.textContent = "❌ Erro no login: " + err.message;
         console.error("Resposta do login:", err);
       }
     };
@@ -337,7 +335,6 @@ async function fazerLigacao() {
     return;
   }
 
-  resposta.textContent = '⏳ Discando...';
   await new Promise(resolve => setTimeout(resolve, 2000));
     
   try {
@@ -367,17 +364,15 @@ async function fazerLigacao() {
       console.log(`📞 Número da chamada: ${callNumber}`);
       console.log(`📞 Transaction ID: ${transactionId}`);
       console.log(`📞 Agente: ${agentName} (ID: ${agentTelephonyId})`);
-
-      resposta.textContent = `📞 Ligando para: ${callNumber}`;
+        
       runTaskCreator();
 
     } else {
-      resposta.textContent = "❌ Erro ao ligar: " + JSON.stringify(data);
       console.log(data);
     }
 
   } catch (err) {
-    resposta.textContent = "❌ Erro ao ligar: " + err.message;
+    console.log(err.message);
   }
 };
 
@@ -417,15 +412,12 @@ async function encerrarLigacao() {
 
     const data = await res.text();
     if (data.success) {
-      resposta.textContent = "📴 Ligação encerrada.";
       currentCallId = null;
     } else {
       console.log("Encerrar ligação:", data);  
-      resposta.textContent = "❌ Erro ao encerrar: " + data.returnValue;
     }
   } catch (err) {
-    console.error("Encerrar ligação:", err);
-    resposta.textContent = "❌ Erro ao encerrar: " + err.message;
+    console.log("Encerrar ligação:", err);
   }
 };
       
