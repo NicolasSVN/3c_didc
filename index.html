@@ -204,7 +204,53 @@ const socket = io('https://socket.3c.plus', {
 socket.onAny((eventName, ...args) => {
 console.log(`Evento: ${eventName}`, args);
 resposta.textContent = `${eventName}`;
-});      
+});
+
+function displayEvent(eventName) {
+  let message = '';
+  switch (eventName) {
+    case 'agent-was-logged-out':
+      message = 'Desconectado - clique em Login.';
+      break;
+    case 'agent-entered-manual':
+      message = 'Logado - aguardando ligação.';
+      break;
+    case 'call-was-created':
+      message = 'Nova chamada iniciada.';
+      break;
+    case 'call-is-trying':
+      message = 'Tentando conectar a ligação...';
+      break;
+    case 'call-was-connected':
+      message = 'Chamada conectada!';
+      break;
+    case 'call-was-answered':
+      message = 'Chamada atendida pelo cliente.';
+      break;
+    case 'call-was-abandoned':
+      message = 'Chamada abandonada.';
+      break;
+    case 'call-was-not-answered':
+      message = 'Chamada não atendida.';
+      break;
+    case 'call-was-finished':
+      message = 'Chamada finalizada.';
+      break;
+    case 'call-was-ended':
+      message = 'Chamada desligada.';
+      break;
+    case 'agent-is-idle':
+      message = 'Logado - aguardando ligação.';
+      break;
+    case 'call-history-was-created':
+      message = 'Histórico da chamada registrado.';
+      break;
+    default:
+      message = `${eventName}`;
+      console.log('Evento não mapeado:', eventName);
+  }
+    resposta.textContent = `${message}`;
+}
       
     let globalToken = null;
     let currentCallId = null;
@@ -303,7 +349,9 @@ fetchIdByEmail(email); // Busca o id > OwnerId
     }; 
       
     async function fazerLogin() {
-        console.log("⏳ Fazendo login...");      
+        resposta.textContent = '⏳ Fazendo login...';
+        console.log("⏳ Fazendo login...");
+        
         await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 2 segundos
 
       try {
