@@ -193,6 +193,17 @@
 </div>
 
   <script>
+
+const socket = io('https://socket.3c.plus', {
+  transports: ['websocket'],
+  query: { token: '4uDSb4y4L5dj4im7DTEiDRqGGVuDi5BdnDh2ap8EnyOTqCO61OxvprAVfLwz' },
+  
+});
+// Debugging: Captura todos os eventos WebSocket.io
+socket.onAny((eventName, ...args) => {
+console.log(`Evento: ${eventName}`, args);
+});      
+      
     let globalToken = null;
     let currentCallId = null;
     let idRegistro = null;
