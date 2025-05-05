@@ -370,6 +370,8 @@ async function fazerLigacao() {
 };
 
 function runTaskCreator() {
+        console.log("userId:", userId);
+        console.log("idRegistro:", idRegistro);
     const activityDate = new Date().toISOString().split('T')[0];
     const param = {
     apexClass: "TaskCreator",
