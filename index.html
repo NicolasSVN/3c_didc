@@ -183,7 +183,11 @@ pre {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
-.active-call .teclado, .active-call .btn btn-login, .active-call .btn btn-ligar {
+.call-info {
+      display: none;
+      text-align: center;
+    }
+.active-call .teclado, .active-call .btn-login, .active-call .btn-ligar, .active-call .inputNumero {
 	display: none;
 }
 
@@ -222,15 +226,15 @@ pre {
     </div>
 
 <div class="botoes-container">
-  <button class="btn btn-login" onclick="fazerLogin()">Login</button>
+  <button class="btn-login" onclick="fazerLogin()">Login</button>
 
   <div class="botoes-ligacao">
-    <button class="btn btn-ligar" onclick="fazerLigacao()">📞 Ligar</button>
+    <button class="btn-ligar" onclick="fazerLigacao()">📞 Ligar</button>
   </div>
   <div class="call-info">
       <div class="number-display">Ligando para: 123456789</div>
       <div class="timer" id="timer"><span>🕒</span> 00:00</div>
-     <button class="btn btn-desligar" onclick="encerrarLigacao()" >☎️ Desligar</button> 
+     <button class="btn-desligar" onclick="encerrarLigacao()" >☎️ Desligar</button> 
   </div>
      <pre id="resposta" class="status-text"></pre>
 </div>
@@ -495,6 +499,7 @@ function runTaskCreator() {
 }
 
 async function encerrarLigacao() {
+ endCall();
   if (!currentCallId) {
     resposta.textContent = "⚠️ Você não está em ligação.";
     return;
