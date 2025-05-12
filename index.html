@@ -528,7 +528,30 @@ function addNumero(num) {
     const campo = document.getElementById('digitarNumero');
     campo.value += num;
 }
+function startCall() {
+	container.classList.add('active-call');
+	startTimer();
+}
 
+function endCall() {
+	container.classList.remove('active-call');
+	stopTimer();
+}
+
+function startTimer() {
+	let seconds = 0;
+	timerInterval = setInterval(() => {
+	seconds++;
+	const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+	const secs = String(seconds % 60).padStart(2, '0');
+	timerElement.innerHTML = `<span>🕒</span> ${minutes}:${secs}`;
+	}, 1000);
+}
+
+function stopTimer() {
+	clearInterval(timerInterval);
+	timerElement.innerHTML = `<span>🕒</span> 00:00`;
+}
   </script>
 </body>
 </html>
