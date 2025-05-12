@@ -183,6 +183,13 @@ pre {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
+.active-call .teclado, .active-call .btn btn-login, .active-call .btn btn-ligar {
+	display: none;
+}
+
+.active-call .call-info {
+	display: block;
+}
   </style>
 
   <!-- Open CTI e Interaction -->
@@ -190,7 +197,7 @@ pre {
   <script src="http://svn3.lightning.force.com/support/api/25.0/interaction.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="container">
     <iframe id="iframe3c" style="border:1px solid black;" allow="microphone" ></iframe>
       
     <div style="display: flex; align-items: center; gap: 10px;">
@@ -219,13 +226,20 @@ pre {
 
   <div class="botoes-ligacao">
     <button class="btn btn-ligar" onclick="fazerLigacao()">📞 Ligar</button>
-    <button class="btn btn-desligar" onclick="encerrarLigacao()" >☎️ Desligar</button>
+  </div>
+  <div class="call-info">
+      <div class="number-display">Ligando para: 123456789</div>
+      <div class="timer" id="timer"><span>🕒</span> 00:00</div>
+     <button class="btn btn-desligar" onclick="encerrarLigacao()" >☎️ Desligar</button> 
   </div>
      <pre id="resposta" class="status-text"></pre>
 </div>
 
   <script>
-
+	  
+const container = document.getElementById('container');
+const timerElement = document.getElementById('timer');
+	  
 const socket = io('https://socket.3c.plus', {
   transports: ['websocket'],
   query: { token: '4uDSb4y4L5dj4im7DTEiDRqGGVuDi5BdnDh2ap8EnyOTqCO61OxvprAVfLwz' },
@@ -285,12 +299,12 @@ function displayEvent(eventName, eventData) {
     resposta.textContent = `${message}`;
 }
       
-    let globalToken = null;
-    let currentCallId = null;
-    let idRegistro = null;
-    let userId = null;
-    let isClickToDialEnabled = false;
-      
+let globalToken = null;
+let currentCallId = null;
+let idRegistro = null;
+let userId = null;
+let isClickToDialEnabled = false;
+let timerInterval;
 // Ao carregar a página
 // 1. Ligar o clicktToCall
 // 2. Pega o e-mail do usuário
@@ -413,6 +427,7 @@ fetchIdByEmail(email); // Busca o id > OwnerId
     };
 
 async function fazerLigacao() {
+  startCall();
   const numero = document.getElementById('digitarNumero').value;
 
   if (!numero) {
