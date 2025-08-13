@@ -306,6 +306,7 @@ let globalToken = null;
 let currentCallId = null;
 let idRegistro = null;
 let userId = null;
+let campaignId = null;
 let isClickToDialEnabled = false;
 let timerInterval;
 // Ao carregar a página
@@ -392,13 +393,15 @@ fetchIdByEmail(email); // Busca o id > OwnerId
     console.log('Buscando Id para o email:', email);
       const { data, error } = await supabaseClient
         .from('user_token')
-        .select('userId')
+        .select('userId','campaign_id')
         .eq('email', email);
       if (error) {
         console.error('Erro ao buscar o Id:', error);
       } else {
         userId = data[0].userId;
+		campaignId = data[0].campaign_id;
         console.log('Id encontrado:', userId);
+		console.log('campaignId encontrado:', campaignId);
       }
     }; 
       
@@ -416,7 +419,7 @@ fetchIdByEmail(email); // Busca o id > OwnerId
             "Content-Type": "application/x-www-form-urlencoded"
           },
           body: new URLSearchParams({
-            campaign: "172523",
+            campaign: campaignId,
             mode: "manual"
           })
         });
@@ -574,3 +577,4 @@ function stopTimer() {
   </script>
 </body>
 </html>
+
