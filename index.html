@@ -243,16 +243,7 @@ pre {
 const container = document.getElementById('container');
 const timerElement = document.getElementById('timer');
 	  
-const socket = io('https://socket.3c.plus', {
-  transports: ['websocket'],
-  query: { token: '4uDSb4y4L5dj4im7DTEiDRqGGVuDi5BdnDh2ap8EnyOTqCO61OxvprAVfLwz' },
-  
-});
-// Debugging: Captura todos os eventos WebSocket.io
-socket.onAny((eventName, ...args) => {
-console.log(`Evento: ${eventName}`, args);
-displayEvent(eventName);
-});
+
 
 function displayEvent(eventName, eventData) {
   let message = '';
@@ -309,6 +300,7 @@ let userId = null;
 let campaignId = null;
 let isClickToDialEnabled = false;
 let timerInterval;
+let socket = null;
 // Ao carregar a página
 // 1. Ligar o clicktToCall
 // 2. Pega o e-mail do usuário
@@ -379,6 +371,18 @@ fetchIdByEmail(email); // Busca o id > OwnerId
         const iframe = document.getElementById("iframe3c");
         const url = `https://svninvestimentos1.3c.plus/extension?api_token=${globalToken}`;
         iframe.src = url;
+
+  socket = io('https://socket.3c.plus', {
+  transports: ['websocket'],
+  query: { token: globalToken }
+  });
+
+// Debugging: Captura todos os eventos WebSocket.io
+socket.onAny((eventName, ...args) => {
+console.log(`Evento: ${eventName}`, args);
+displayEvent(eventName, eventData);
+});
+		  
   socket.on('connect', () => {
   console.log('Conectado ao servidor 3C Plus');
   resposta.textContent = 'Clique em Login';
@@ -579,6 +583,7 @@ function stopTimer() {
   </script>
 </body>
 </html>
+
 
 
 
