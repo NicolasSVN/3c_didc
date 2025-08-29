@@ -245,7 +245,7 @@ const timerElement = document.getElementById('timer');
 	  
 
 
-function displayEvent(eventName, eventData) {
+function displayEvent(eventName, eventData = {}) {
   let message = '';
   switch (eventName) {
     case 'agent-was-logged-out':
@@ -583,6 +583,7 @@ function stopTimer() {
   </script>
 </body>
 </html>
+
 
 
 
